@@ -1,0 +1,21 @@
+server:
+  servlet:
+    context-path: /springboot-clean-architecture-example
+
+spring:
+  application:
+    name: springboot-clean-architecture-example
+  datasource:
+    url: jdbc:postgresql://localhost:5432/springboot-clean-architecture-example-test
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    url: jdbc:postgresql://localhost:5432/springboot-clean-architecture-example-test
+    user: postgres
+    password: postgres
+
+logging:
+  level:
+    root: INFO

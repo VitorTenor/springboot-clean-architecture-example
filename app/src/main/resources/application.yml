@@ -1,0 +1,35 @@
+server:
+  port: 5600
+  servlet:
+    context-path: /springboot-clean-architecture-example
+
+spring:
+  application:
+    name: springboot-clean-architecture-example
+  datasource:
+    url: jdbc:postgresql://localhost:5432/springboot-clean-architecture-example
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    url: jdbc:postgresql://localhost:5432/springboot-clean-architecture-example
+    user: postgres
+    password: postgres
+
+document:
+  api:
+    title: Spring Boot Clean Architecture Example
+    description: Spring Boot Clean Architecture Example
+    version: 1.0
+    contact:
+      name: Vitor Tenorio
+      email: vitortenorio.dev@gmail.com
+
+springdoc:
+  packages-to-scan: com.vitortenorio.springbootcleanarchitectureexample
+  paths-to-match: /v1/**
+
+logging:
+  level:
+    root: INFO
