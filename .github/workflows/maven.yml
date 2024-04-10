@@ -1,0 +1,32 @@
+name: project cicd flow
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: PostgresSQL
+        run: docker run --restart always --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
+
+      - name: Create Database
+        run: docker exec -it postgres createdb -U postgres springboot-clean-architecture-example-test
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v1
+        with:
+          java-version: '21'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Run Tests
+        run: mvn test
