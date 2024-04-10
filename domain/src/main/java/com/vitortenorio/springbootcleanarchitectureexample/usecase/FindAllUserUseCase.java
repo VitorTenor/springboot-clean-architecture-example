@@ -1,19 +1,20 @@
 package com.vitortenorio.springbootcleanarchitectureexample.usecase;
 
-import com.vitortenorio.springbootcleanarchitectureexample.entity.CreateUserEntity;
+import com.vitortenorio.springbootcleanarchitectureexample.entity.UserEntity;
 import com.vitortenorio.springbootcleanarchitectureexample.gateway.UserGateway;
 
 import javax.inject.Named;
+import java.util.List;
 
 @Named
-public class CreateUserUseCase {
+public class FindAllUserUseCase {
     private final UserGateway userGateway;
 
-    public CreateUserUseCase(UserGateway userGateway) {
+    public FindAllUserUseCase(UserGateway userGateway) {
         this.userGateway = userGateway;
     }
 
-    public void execute(CreateUserEntity entity) {
-        userGateway.create(entity);
+    public List<UserEntity> execute() {
+        return userGateway.findAll();
     }
 }
