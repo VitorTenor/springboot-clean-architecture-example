@@ -12,6 +12,7 @@ import com.vitortenorio.springbootcleanarchitectureexample.exception.UserExcepti
 import com.vitortenorio.springbootcleanarchitectureexample.gateway.UserGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +26,7 @@ public class UserClient implements UserGateway {
     private final MessageHelper messageHelper;
 
     @Override
+    @Transactional
     public void create(CreateUserEntity entity) {
         if (Boolean.TRUE.equals(this.emailExists(entity.email()))) {
             throw new UserException(messageHelper.getMessage("email.already.exists"));
@@ -43,6 +45,7 @@ public class UserClient implements UserGateway {
     }
 
     @Override
+    @Transactional
     public void update(UpdateUserEntity entity) {
         final var emailExists = this.emailExistsAndUuidNot(entity.email(), entity.uuid());
         if (Boolean.TRUE.equals(emailExists)) {
@@ -65,6 +68,7 @@ public class UserClient implements UserGateway {
     }
 
     @Override
+    @Transactional
     public void updatePassword(UpdateUserPasswordEntity entity) {
         var model = userRepository.findByEmail(entity.email())
                 .orElseThrow(() -> new UserException(messageHelper.getMessage("user.not.found")));
