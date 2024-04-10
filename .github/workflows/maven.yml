@@ -16,6 +16,18 @@ jobs:
       - name: PostgresSQL
         run: docker run --restart always --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
 
+      - name: Wait for PostgreSQL to start
+        run: |
+          for i in {1..10}; do
+            if docker exec postgres pg_isready -U postgres; then
+              echo "PostgreSQL is ready!"
+              break
+            else
+              echo "PostgreSQL is not ready, sleeping..."
+              sleep 10
+            fi
+          done
+
       - name: Create Database
         run: docker exec postgres createdb -U postgres springboot-clean-architecture-example-test
 
