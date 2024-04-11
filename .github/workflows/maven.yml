@@ -43,10 +43,10 @@ jobs:
       - name: Run Tests
         run: mvn test
 
-      - name: Run JaCoCo
-        run: mvn jacoco:report
+      - name: Run Coverage
+        run: mvn cobertura:cobertura
       - name: Upload coverage to GitHub
         uses: actions/upload-artifact@v2
         with:
-          name: jacoco
-          path: target/site/jacoco/
+          name: cobertura
+          path: target/site/cobertura/
