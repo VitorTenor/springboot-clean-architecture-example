@@ -43,10 +43,3 @@ jobs:
       - name: Run Tests
         run: mvn test
 
-      - name: Run Coverage
-        run: mvn cobertura:cobertura
-      - name: Upload coverage to GitHub
-        uses: actions/upload-artifact@v2
-        with:
-          name: cobertura
-          path: target/site/cobertura/
