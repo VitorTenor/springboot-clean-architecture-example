@@ -84,6 +84,14 @@ public class UserClient implements UserGateway {
         userRepository.save(model);
     }
 
+    @Override
+    @Transactional
+    public void delete(final UUID uuid) {
+        final var user = userRepository.findByUuid(uuid)
+                .orElseThrow(() -> new UserException(messageHelper.getMessage("user.not.found")));
+        userRepository.delete(user);
+    }
+
     private Boolean emailExistsAndUuidNot(final String email, final UUID uuid) {
         return userRepository.existsByEmailAndUuidNot(email, uuid);
     }

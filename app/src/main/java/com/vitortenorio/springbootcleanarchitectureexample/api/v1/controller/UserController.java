@@ -23,6 +23,7 @@ import java.util.UUID;
 public class UserController implements UserControllerOpenApi {
     private final FindAllUserUseCase findAllUserUseCase;
     private final CreateUserUseCase createUserUseCase;
+    private final DeleteUserUseCase deleteUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final FindUserByUUIDUseCase findUserByUUIDUseCase;
     private final UpdateUserPasswordUseCase updateUserPasswordUseCase;
@@ -59,5 +60,11 @@ public class UserController implements UserControllerOpenApi {
     @ResponseStatus(HttpStatus.OK)
     public void updatePassword(@RequestBody @Valid UpdateUserPasswordInput input) {
         updateUserPasswordUseCase.execute(input.toEntity());
+    }
+
+    @DeleteMapping("/{uuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable final UUID uuid) {
+        deleteUserUseCase.execute(uuid);
     }
 }

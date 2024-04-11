@@ -14,4 +14,5 @@ public interface UserGateway {
     void update(UpdateUserEntity entity);
     UserEntity findByUUID(final UUID uuid);
     void updatePassword(UpdateUserPasswordEntity entity);
+    void delete(UUID uuid);
 }

@@ -176,7 +176,7 @@ public class TestUserController extends AbstractContextTest {
 
         var users = this.payloadExtractor.asListOf(UserOutput.class);
 
-        assertThat(users).hasSize(2).allSatisfy(user -> {
+        assertThat(users).hasSize(3).allSatisfy(user -> {
             assertThat(user.getUuid()).isNotNull();
             assertThat(user.getName()).isNotNull();
             assertThat(user.getLastName()).isNotNull();
@@ -489,12 +489,12 @@ public class TestUserController extends AbstractContextTest {
         // arrange
         var json =
                 """
-                           {
-                                 "password": "123456",
-                                 "newPassword": "1234567",
-                                 "email": "john.doe"
-                           }
-                        """;
+                   {
+                         "password": "123456",
+                         "newPassword": "1234567",
+                         "email": "john.doe"
+                   }
+                """;
         var request = MockMvcRequestBuilders
                 .put(URI + "/password")
                 .contentType("application/json")
@@ -519,5 +519,46 @@ public class TestUserController extends AbstractContextTest {
                     assertThat(object.getName()).isEqualTo("email");
                     assertThat(object.getUserMessage()).isEqualTo("Email is invalid");
                 });
+    }
+
+    @Test
+    @Order(17)
+    @DisplayName("017 - Delete User - Success")
+    public void deleteUser() throws Exception {
+        // arrange
+        var request = MockMvcRequestBuilders
+                .delete(URI + "/aaa4c5b2-3009-4ad9-84b8-bc80340c4d64")
+                .contentType("application/json");
+
+        // act
+        var resultActions = this.mockMvc.perform(request);
+        resultActions.andDo(this.payloadExtractor).andReturn();
+
+        // assert
+        resultActions.andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    @Order(18)
+    @DisplayName("018 - Delete User - Error - User not found")
+    public void deleteUserErrorUserNotFound() throws Exception {
+        // arrange
+        var request = MockMvcRequestBuilders
+                .delete(URI + "/aaa4c5b2-3009-4ad9-84b8-bc80340c4d69")
+                .contentType("application/json");
+
+        // act
+        var resultActions = this.mockMvc.perform(request);
+        resultActions.andDo(this.payloadExtractor).andReturn();
+
+        // assert
+        resultActions.andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        var error = this.payloadExtractor.as(Problem.class);
+
+        assertEquals(ProblemType.USER_ERROR.uri(), error.getUri());
+        assertEquals(ProblemType.USER_ERROR.title(), error.getTitle());
+        assertEquals("User not found", error.getDetail());
+        assertEquals("User not found", error.getUserMessage());
     }
 }
